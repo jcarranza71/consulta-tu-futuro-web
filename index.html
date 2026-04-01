@@ -99,6 +99,7 @@
 
       --container: 1180px;
       --transition: 0.25s ease;
+      --header-offset: 96px;
     }
 
     /* =========================================
@@ -159,51 +160,75 @@
       padding: 4.75rem 0;
     }
 
+    #sobre,
+    #servicios,
+    #beneficios,
+    #proceso,
+    #testimonios,
+    #faq,
+    #contacto,
+    #aviso-legal,
+    #privacidad,
+    #cookies {
+      scroll-margin-top: var(--header-offset);
+    }
+
+    /* =========================================
+       INICIOS DE SECCIÓN CENTRADOS
+    ========================================== */
     .section-header {
-      margin-bottom: 1.9rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 2.2rem;
     }
 
     .section-header h2 {
-      display: inline-block;
-      margin: 0 0 0.9rem;
-      font-size: clamp(2rem, 5vw, 3.15rem);
-      line-height: 1.08;
-      letter-spacing: -0.04em;
-      position: relative;
+      display: block;
+      margin: 0 0 1rem;
+      max-width: 16ch;
+      font-size: clamp(2rem, 5vw, 3.7rem);
+      line-height: 1.02;
+      letter-spacing: -0.05em;
       color: var(--primary-900);
+      text-wrap: balance;
     }
 
     .section-header h2::after {
       content: "";
       display: block;
-      width: 68px;
+      width: 86px;
       height: 4px;
-      margin-top: 0.9rem;
+      margin: 1rem auto 0;
       border-radius: 999px;
       background: linear-gradient(90deg, var(--accent-gold), var(--primary-500));
     }
 
     .section-header p {
       margin: 0;
-      max-width: 68ch;
+      max-width: 42rem;
       color: var(--muted);
       font-size: 1rem;
+      text-wrap: balance;
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 0.45rem;
-      padding: 0.45rem 0.95rem;
-      margin-bottom: 1rem;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0.7rem 1.25rem;
+      margin: 0 0 1.15rem;
       border-radius: 999px;
-      background: rgba(201, 162, 39, 0.10);
-      color: var(--accent-gold);
+      background: rgba(30, 58, 138, 0.08);
+      color: var(--primary-500);
+      border: 1px solid rgba(30, 58, 138, 0.14);
       font-size: 0.8rem;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      border: 1px solid rgba(201, 162, 39, 0.18);
+      letter-spacing: 0.12em;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
     }
 
     .panel {
@@ -340,14 +365,14 @@
     }
 
     /* =========================================
-       MENÚ HAMBURGUESA
+       MENÚ HAMBURGUESA CON CIERRE AL NAVEGAR
     ========================================== */
     .menu {
       position: relative;
       margin-left: auto;
     }
 
-    .menu summary {
+    .menu-toggle {
       width: 52px;
       height: 52px;
       display: inline-flex;
@@ -357,16 +382,11 @@
       border: 1px solid rgba(255, 255, 255, 0.12);
       background: rgba(255, 255, 255, 0.08);
       cursor: pointer;
-      list-style: none;
       transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background var(--transition);
     }
 
-    .menu summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .menu summary:hover,
-    .menu[open] summary {
+    .menu-toggle:hover,
+    .menu-toggle:focus-visible {
       transform: translateY(-1px);
       background: rgba(255, 255, 255, 0.12);
       border-color: rgba(201, 162, 39, 0.4);
@@ -390,18 +410,6 @@
       transition: transform var(--transition), opacity var(--transition);
     }
 
-    .menu[open] .menu-icon span:nth-child(1) {
-      transform: translateY(7px) rotate(45deg);
-    }
-
-    .menu[open] .menu-icon span:nth-child(2) {
-      opacity: 0;
-    }
-
-    .menu[open] .menu-icon span:nth-child(3) {
-      transform: translateY(-7px) rotate(-45deg);
-    }
-
     .menu-nav {
       position: absolute;
       top: calc(100% + 0.7rem);
@@ -412,6 +420,82 @@
       background: #FFFFFF;
       border: 1px solid rgba(10, 37, 64, 0.08);
       box-shadow: var(--shadow-lg);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: opacity var(--transition), visibility var(--transition), transform var(--transition);
+      z-index: 1002;
+    }
+
+    .menu-nav:target {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .menu-nav:target .menu-close-icon span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .menu-nav:target .menu-close-icon span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-nav:target .menu-close-icon span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .menu-nav:target + .menu-backdrop {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .menu-nav-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+      padding: 0.2rem 0.2rem 0.5rem;
+    }
+
+    .menu-nav-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary-700);
+    }
+
+    .menu-close {
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      border: 1px solid rgba(10, 37, 64, 0.08);
+      background: #FFFFFF;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .menu-close-icon {
+      width: 18px;
+      height: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    .menu-close-icon span {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      border-radius: 999px;
+      background: var(--primary-800);
+      transition: transform var(--transition), opacity var(--transition);
     }
 
     .menu-nav ul {
@@ -430,15 +514,25 @@
       transition: background var(--transition), color var(--transition), transform var(--transition);
     }
 
-    .menu-nav a:hover,
-    .menu-nav a:focus-visible {
+    .menu-nav ul a:hover,
+    .menu-nav ul a:focus-visible {
       background: rgba(30, 58, 138, 0.08);
       color: var(--primary-700);
       transform: translateX(2px);
     }
 
+    .menu-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 37, 64, 0.28);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--transition), visibility var(--transition);
+      z-index: 1001;
+    }
+
     /* =========================================
-       HERO NUEVO SEGÚN REFERENCIA
+       HERO
     ========================================== */
     .hero {
       padding: 2.2rem 0 4.8rem;
@@ -1067,8 +1161,8 @@
 
     .cta-copy p {
       margin: 0 0 1.2rem;
-      color: rgba(255, 255, 255, 0.86);
       max-width: 58ch;
+      color: rgba(255, 255, 255, 0.86);
     }
 
     .cta-points {
@@ -1192,6 +1286,10 @@
       gap: 1.5rem;
     }
 
+    .footer-brand .brand-mark {
+      margin-bottom: 1rem;
+    }
+
     .footer-brand h2 {
       margin: 0 0 0.8rem;
       font-size: 1.3rem;
@@ -1280,6 +1378,10 @@
        RESPONSIVE
     ========================================== */
     @media (min-width: 720px) {
+      :root {
+        --header-offset: 104px;
+      }
+
       .container {
         width: min(calc(100% - 2rem), var(--container));
       }
@@ -1318,6 +1420,10 @@
     }
 
     @media (min-width: 1024px) {
+      :root {
+        --header-offset: 110px;
+      }
+
       .section {
         padding: 6rem 0;
       }
@@ -1385,16 +1491,27 @@
         </span>
       </a>
 
-      <details class="menu">
-        <summary aria-label="Abrir menú principal">
+      <div class="menu">
+        <a href="#site-menu" class="menu-toggle" aria-label="Abrir menú principal">
           <span class="menu-icon" aria-hidden="true">
             <span></span>
             <span></span>
             <span></span>
           </span>
-        </summary>
+        </a>
 
-        <nav class="menu-nav" aria-label="Navegación principal">
+        <nav id="site-menu" class="menu-nav" aria-label="Navegación principal">
+          <div class="menu-nav-header">
+            <span class="menu-nav-title">Menú</span>
+            <a href="#" class="menu-close" aria-label="Cerrar menú">
+              <span class="menu-close-icon" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+            </a>
+          </div>
+
           <ul>
             <li><a href="#sobre">Sobre nosotros</a></li>
             <li><a href="#servicios">Servicios</a></li>
@@ -1405,7 +1522,9 @@
             <li><a href="#contacto">Contacto</a></li>
           </ul>
         </nav>
-      </details>
+
+        <a href="#" class="menu-backdrop" aria-hidden="true"></a>
+      </div>
     </div>
   </header>
 
@@ -1680,9 +1799,9 @@
       <div class="container">
         <div class="section-header">
           <span class="eyebrow">Testimonios</span>
-          <h2>La confianza crece cuando las decisiones empiezan a tener sentido</h2>
+          <h2>Personas que hoy toman decisiones financieras con más claridad y seguridad.</h2>
           <p>
-            Estos testimonios reflejan el cambio que suele aparecer cuando una persona deja de improvisar y empieza a trabajar con estrategia.
+            La confianza crece cuando hay una estrategia útil, una guía clara y decisiones alineadas con objetivos reales.
           </p>
         </div>
 
@@ -1738,12 +1857,12 @@
     <section id="faq" class="section">
       <div class="container">
         <div class="section-header">
-		  <span class="eyebrow">Preguntas frecuentes</span>
-		  <h2>Respuestas claras antes de empezar, porque la ambigüedad no tiene cabida</h2>
-		  <p>
-			Estas son algunas de las dudas más habituales antes de solicitar una asesoría financiera personalizada.
-		  </p>
-		</div>
+          <span class="eyebrow">Preguntas frecuentes</span>
+          <h2>Respuestas claras antes de empezar, porque la ambigüedad no tiene cabida</h2>
+          <p>
+            Estas son algunas de las dudas más habituales antes de solicitar una asesoría financiera personalizada.
+          </p>
+        </div>
 
         <div class="faq-list">
           <details class="faq-item">
@@ -1870,7 +1989,7 @@
     <div class="container footer-top">
       <div class="footer-grid">
         <section class="footer-brand">
-		<span class="brand-mark">CF</span>
+          <span class="brand-mark">CF</span>
           <h2>Consulta tu futuro INC</h2>
           <p>
             Firma de asesoría financiera personalizada para ayudarte a ordenar tu dinero, definir prioridades y tomar decisiones con una base más clara y sólida.
@@ -1913,5 +2032,7 @@
     </div>
   </footer>
 
+
 </body>
 </html>
+
